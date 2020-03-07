@@ -1,13 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"time"
+	"github.com/calvinfeng/multigoprograms/cmd"
+	"github.com/sirupsen/logrus"
+	"os"
 )
 
+func init() {
+	logrus.SetOutput(os.Stdout)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		DisableColors:             false,
+		FullTimestamp:             true,
+	})
+}
+
 func main() {
-	fmt.Println("Hello world!")
-	for range time.NewTicker(time.Second).C {
-		fmt.Println("current time is", time.Now())
+	if err := cmd.Execute(); err != nil {
+		logrus.Fatal(err)
 	}
 }
