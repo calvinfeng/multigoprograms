@@ -13,7 +13,16 @@ func initViperConfig() {
 	viper.AddConfigPath("./conf")
 	viper.SetConfigName(configurationName)
 	viper.SetConfigType("toml")
-	if err := viper.ReadInConfig(); err != nil {
+
+	var err error
+	err = viper.BindEnv("server.port", "SERVER_PORT")
+
+	if err != nil {
+		logrus.WithError(err).Fatal("viper failed to bind to environment variables")
+	}
+
+	err = viper.ReadInConfig()
+	if err != nil {
 		logrus.WithError(err).Fatalf("failed to load configuration from /conf/%s", configurationName)
 	}
 }
@@ -40,7 +49,7 @@ func Execute() error {
 		Use:                        "client",
 		Short:                      "Run a HTTP client",
 		PreRunE:                    nil,
-		RunE:                       runServer,
+		RunE:                       runClient,
 	}
 
 	rootCmd.AddCommand(runServerCmd, runClientCmd)

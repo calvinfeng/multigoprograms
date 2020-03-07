@@ -16,6 +16,6 @@ func init() {
 
 func main() {
 	if err := cmd.Execute(); err != nil {
-		logrus.Fatal(err)
+		logrus.Fatal(err) // This sets exit code to be 1
 	}
 }
